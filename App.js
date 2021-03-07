@@ -1,13 +1,98 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text } from 'react-native';
+import MapView, { Marker, Polyline } from 'react-native-maps';
+import * as Location from 'expo-location';
+import { poop } from './src/assets'
 
 export default function App() {
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        let { status } = await Location.requestPermissionsAsync();
+        if (status !== 'granted') {
+          setErrorMsg('Permission to access location was denied');
+          return;
+        }
+
+        let actualLocation = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.High
+        });
+        console.log('Locationnnn');
+        console.log(actualLocation)
+        setLocation(actualLocation)
+
+      } catch (err) {
+        console.log('Ocorreu erro');
+        console.log(JSON.stringify(err));
+        setErrorMsg(err.message)
+      }
+    })();
+  }, []);
+
+  let message = 'Waiting...';
+  if (errorMsg) {
+    message = errorMsg;
+  } else if (location) {
+    message = JSON.stringify(location);
+  }
+
+  const initialPosition = {
+    latitude: 37.8025259,
+    longitude: -122.4351431,
+    latitudeDelta: 0.009,
+    longitudeDelta: 0.009
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <>
+      <View style={styles.container}>
+        {location &&
+          <MapView style={styles.map}
+            region={initialPosition}
+            provider='google'
+          >
+            <Polyline
+              coordinates={[
+                { latitude: 37.8025259, longitude: -122.4351431 },
+                { latitude: 37.7896386, longitude: -122.421646 },
+                { latitude: 37.7665248, longitude: -122.4161628 },
+                { latitude: 37.7734153, longitude: -122.4577787 },
+                { latitude: 37.7948605, longitude: -122.4596065 },
+                { latitude: 37.8025259, longitude: -122.4351431 }
+              ]}
+              strokeColor="#000" // fallback for when `strokeColors` is not supported by the map-provider
+              strokeColors={[
+                '#7F0000',
+                '#00000000', // no color, creates a "long" gradient between the previous and next coordinate
+                '#B24112',
+                '#E5845C',
+                '#238C23',
+                '#7F0000'
+              ]}
+              strokeWidth={6}
+              geodesic={true}
+            />
+            <Marker
+              coordinate={{
+                latitude: initialPosition.latitude,
+                longitude: initialPosition.longitude,
+              }}
+              title='Opa'
+              description='Mas bahhh'
+              image={poop}
+            />
+          </MapView>
+        }
+        <View>
+          <Text>
+            {message}
+          </Text>
+        </View>
+      </View>
+    </>
   );
 }
 
@@ -15,7 +100,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'stretch',
+    justifyContent: 'flex-start',
   },
+  map: {
+    flex: 1
+  },
+  button: {
+    borderRadius: 6,
+    padding: 5,
+    borderWidth: 1,
+    borderColor: '#333333',
+    margin: 10
+
+  }
 });
