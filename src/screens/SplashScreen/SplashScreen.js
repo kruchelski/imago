@@ -6,7 +6,7 @@ const MenuScreen = ({ setLoadingApp }) => {
   return (
     <View style={styles.container}>
       <Text>
-        Menu Screen
+        Splash Screen
       </Text>
     </View>
   );

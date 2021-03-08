@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { View, Text } from 'react-native';
+import { useMap } from '../../hooks';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import * as Location from 'expo-location';
 import styles from './style';
@@ -7,6 +8,7 @@ import styles from './style';
 const MapScreen = () => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const { loadAllData, mapErrorHandler, mapState } = useMap();
 
   useEffect(() => {
     (async () => {
@@ -20,16 +22,22 @@ const MapScreen = () => {
         let actualLocation = await Location.getCurrentPositionAsync({
           accuracy: Location.Accuracy.High
         });
-        console.log('Locationnnn');
-        console.log(actualLocation)
         setLocation(actualLocation)
 
       } catch (err) {
-        console.log('Ocorreu erro');
-        console.log(JSON.stringify(err));
         setErrorMsg(err.message)
       }
     })();
+
+    const loadMapData = async () => {
+      try {
+        await loadAllData();
+      } catch (err) {
+        mapErrorHandler(err, 'An error ocurrer while getting map data');
+      }
+    }
+
+    loadMapData();
   }, []);
 
   let message = 'Waiting...';
@@ -88,6 +96,11 @@ const MapScreen = () => {
         <View>
           <Text>
             {message}
+          </Text>
+        </View>
+        <View>
+          <Text>
+            {JSON.stringify(mapState)}
           </Text>
         </View>
       </View>

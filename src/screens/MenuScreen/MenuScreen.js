@@ -6,7 +6,7 @@ const MenuScreen = () => {
   return (
     <View style={styles.container}>
       <Text>
-        Menu Screen
+        Menuzz Screen
       </Text>
     </View>
   );

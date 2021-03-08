@@ -1,4 +1,21 @@
 {
-  "markers": [],
-  "draws": []
+  "marker": [
+    {
+      "id": 0,
+      "title": "Test Marker",
+      "desc": "This is a test marker",
+      "coordinate": {
+        "latitude": 37.8025259,
+        "longitude": -122.4351431
+      }
+    }
+  ],
+  "draw": [
+    {
+      "id": 0,
+      "title": "Example Draw",
+      "desc": "This is an example draw",
+      "points": [0, 1, 2]
+    }
+  ]
 }

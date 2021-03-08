@@ -42,6 +42,9 @@ export const makeRequest = async (
     return await client(url, body, headers);
 
   } catch (err) {
+
+    console.log('Error HTTP SERVICE');
+    console.log(JSON.stringify(err))
     const status = err?.response?.status || 'Outro Status';
     const msg = err?.response?.data?.error_description ||
       err?.error ||

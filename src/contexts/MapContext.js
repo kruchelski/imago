@@ -1,5 +1,6 @@
 import React, { createContext, useState } from 'react';
 import { HttpService } from '../services';
+import axios from 'axios';
 
 const MapContext = createContext();
 
@@ -9,7 +10,6 @@ const mapContextApi = (
 ) => {
 
   const loadAllData = async () => {
-
     try {
 
       let promises = [];
@@ -32,10 +32,18 @@ const mapContextApi = (
         throw new Error('Failed to get markers and draws');
       }
 
-      console.log(responses)
+      const [markerResponse, drawResponse] = responses;
+
+      setMapState((prevState) => {
+        return {
+          ...prevState,
+          markers: markerResponse.data,
+          draws: drawResponse.data,
+          error: null
+        }
+      })
 
     } catch (err) {
-
       throw err;
 
     }

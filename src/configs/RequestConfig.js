@@ -1,6 +1,8 @@
 import axios from 'axios';
-import { FAKE_BACKEND_BASE_URL } from '@env';
+import Constants from 'expo-constants';
+
+const { FAKE_BACKEND_BASE_URL } = Constants.manifest.extra;
 
 export const jsonServer = axios.create({
-  baseUrl: FAKE_BACKEND_BASE_URL,
+  baseURL: FAKE_BACKEND_BASE_URL,
 })
