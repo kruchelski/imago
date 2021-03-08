@@ -13,7 +13,7 @@ export const ENDPOINTS = {
   },
 
   getOneMarker: {
-    url: `${marker}/?`,
+    url: `${marker}/@id`,
     method: 'get',
     body: false,
     params: ['id'],
@@ -31,7 +31,7 @@ export const ENDPOINTS = {
   },
 
   editMarker: {
-    url: `${marker}/?`,
+    url: `${marker}/@id`,
     method: 'put',
     body: true,
     params: ['id'],
@@ -41,7 +41,7 @@ export const ENDPOINTS = {
   },
 
   deleteMarker: {
-    url: `${marker}/?`,
+    url: `${marker}/@id`,
     method: 'delete',
     body: false,
     params: ['id'],
@@ -57,7 +57,7 @@ export const ENDPOINTS = {
   },
 
   getOneDraw: {
-    url: `${draw}/id`,
+    url: `${draw}/@id`,
     method: 'get',
     body: false,
     params: ['id'],
@@ -75,7 +75,7 @@ export const ENDPOINTS = {
   },
 
   editDraw: {
-    url: `${draw}/?`,
+    url: `${draw}@id`,
     method: 'put',
     body: true,
     params: ['id'],
@@ -85,7 +85,7 @@ export const ENDPOINTS = {
   },
 
   deleteDraw: {
-    url: draw,
+    url: `${draw}/@id`,
     method: 'delete',
     body: false,
     params: ['id'],
