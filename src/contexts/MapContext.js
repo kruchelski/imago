@@ -1,6 +1,6 @@
 import React, { createContext, useState } from 'react';
 import { HttpService } from '../services';
-import axios from 'axios';
+import * as Location from 'expo-location';
 
 const MapContext = createContext();
 
@@ -39,7 +39,7 @@ const mapContextApi = (
           ...prevState,
           markers: markerResponse.data,
           draws: drawResponse.data,
-          error: null 
+          error: null
         }
       })
 
@@ -63,8 +63,8 @@ const mapContextApi = (
       })
 
       const markerResponse = await HttpService.makeRequest(
-        'createMarker', 
-        requestBody, 
+        'createMarker',
+        requestBody,
         null
       );
 
@@ -99,7 +99,7 @@ const mapContextApi = (
       })
 
       const markerResponse = await HttpService.makeRequest(
-        'editMarker', 
+        'editMarker',
         requestBody,
         id
       );
@@ -161,8 +161,8 @@ const mapContextApi = (
       })
 
       const drawResponse = await HttpService.makeRequest(
-        'createDraw', 
-        requestBody, 
+        'createDraw',
+        requestBody,
         null
       );
 
@@ -197,7 +197,7 @@ const mapContextApi = (
       })
 
       const markerResponse = await HttpService.makeRequest(
-        'editDraw', 
+        'editDraw',
         requestBody,
         id
       );
@@ -244,6 +244,33 @@ const mapContextApi = (
     }
   }
 
+  const getLocation = async () => {
+    try {
+      let { status } = await Location.requestPermissionsAsync();
+      if (status !== 'granted') {
+        throw new Error('Permission to access location was denied');
+      }
+
+      let actualLocation = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.High
+      });
+
+      console.log('Location');
+
+      console.log(actualLocation);
+      
+      setMapState(prevState => {
+        return {
+          ...prevState,
+          location: actualLocation
+        }
+      })
+
+    } catch (err) {
+      throw err;
+    }
+  }
+
   const mapErrorHandler = (
     errorObject,
     defaultMessage = null
@@ -267,6 +294,7 @@ const mapContextApi = (
     addDraw,
     editDraw,
     removeDraw,
+    getLocation,
     mapErrorHandler
   }
 }
@@ -289,7 +317,7 @@ const MapProvider = ({ children }) => {
         ...mapContextApi(mapState, setMapState)
       }}
     >
-      { children }
+      { children}
     </MapContext.Provider>
   )
 }

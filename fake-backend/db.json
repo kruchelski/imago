@@ -4,19 +4,11 @@
       "id": 0,
       "title": "Test Marker",
       "desc": "This is a test marker",
+      "type": "yay",
       "coordinate": {
-        "latitude": 37.8025259,
-        "longitude": -122.4351431
+        "latitude": -25.456380280855427,
+        "longitude": -49.23582969008207
       }
-    },
-    {
-      "title": "nhoi nhoassadfi",
-      "desc": "blublu",
-      "coordinate": {
-        "latitude": 37.8025259,
-        "longitude": -122.4351431
-      },
-      "id": 2
     }
   ],
   "draw": [
@@ -24,13 +16,17 @@
       "id": 0,
       "title": "Example Draw",
       "desc": "This is an example draw",
-      "coordinates": [
-        { "latitude": 37.8025259, "longitude": -122.4351431 },
-        { "latitude": 37.7896386, "longitude": -122.421646 },
-        { "latitude": 37.7665248, "longitude": -122.4161628 },
-        { "latitude": 37.7734153, "longitude": -122.4577787 },
-        { "latitude": 37.7948605, "longitude": -122.4596065 },
-        { "latitude": 37.8025259, "longitude": -122.4351431 }
+      "color": "#FF4040",
+      "coordinates":[
+        { "latitude": -25.456380280855427, "longitude": -49.23582969008207 },
+        { "latitude": -25.453380280855427, "longitude": -49.23782969008207 },
+        { "latitude": -25.452380280855427, "longitude": -49.23682969008207 },
+        { "latitude": -25.452380280855427, "longitude": -49.23602969008207 },
+        { "latitude": -25.453380280855427, "longitude": -49.23582969008207 },
+        { "latitude": -25.452380280855427, "longitude": -49.23562969008207 },
+        { "latitude": -25.452380280855427, "longitude": -49.23492969008207 },
+        { "latitude": -25.453380280855427, "longitude": -49.23382969008207 },
+        { "latitude": -25.456380280855427, "longitude": -49.23582969008207 }
       ]
     }
   ]
