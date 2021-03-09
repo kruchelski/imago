@@ -38,8 +38,8 @@ const mapContextApi = (
         return {
           ...prevState,
           markers: markerResponse.data,
-          draws: _prepareDraws(drawResponse.data, markerResponse.data),
-          error: null
+          draws: drawResponse.data,
+          error: null 
         }
       })
 
@@ -146,12 +146,12 @@ const mapContextApi = (
     }
   }
 
-  const addDraw = async (points, title, desc) => {
+  const addDraw = async (coordinates, title, desc) => {
     try {
       const requestBody = {
         title,
         desc,
-        points
+        coordinates
       }
 
       Object.keys(requestBody).forEach(key => {
@@ -182,12 +182,12 @@ const mapContextApi = (
     }
   }
 
-  const editDraw = async (points, title, desc, id) => {
+  const editDraw = async (coordinates, title, desc, id) => {
     try {
       const requestBody = {
         title,
         desc,
-        points,
+        coordinates,
       }
 
       Object.keys(requestBody).forEach(key => {
@@ -206,7 +206,7 @@ const mapContextApi = (
         throw new Error('An error ocurred with json-server');
       }
 
-      const i = mapState.draws.findIndex(mark => mark.id === id);
+      const i = mapState.draws.findIndex(draw => draw.id === id);
       let newDraws = Array.from(mapState.draws);
       newDraws.splice(i, 1, markerResponse.data);
       setMapState((prevState) => {
@@ -269,25 +269,6 @@ const mapContextApi = (
     removeDraw,
     mapErrorHandler
   }
-}
-
-const _prepareDraws = (drawsRaw, markersRaw) => {
-  let mappedMarkers = [];
-
-  drawsRaw.forEach(draw => {
-    let coordinates = [];
-      draw.points.forEach(point => {
-        const i = markersRaw.find(mark => mark.id === point);
-        coordinates.push(i.coordinate);
-      })
-    mappedMarkers.push({
-      id: draw.id,
-      title: draw.title,
-      desc: draw.desc,
-      points: draw.points,
-      coordinates
-    })
-  })
 }
 
 const MapProvider = ({ children }) => {
