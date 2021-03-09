@@ -1,19 +1,21 @@
 import React from 'react';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { MapScreen, MenuScreen } from '../screens';
+import { createStackNavigator } from '@react-navigation/stack';
+import { MapScreen } from '../screens';
 
-const MainDrawer = createDrawerNavigator();
+const MainStack = createStackNavigator();
 
 export default () => {
   return (
-    <MainDrawer.Navigator
-      drawerContent={(props) => <MenuScreen {...props} />}
+    <MainStack.Navigator
+      screenOptions={{
+        headerShown: false
+      }}
     >
-      <MainDrawer.Screen
+      <MainStack.Screen
         name={'Map'}
         component={MapScreen}
         options={{ title: 'Imago' }}
       />
-    </MainDrawer.Navigator>
+    </MainStack.Navigator>
   );
 }

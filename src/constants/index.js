@@ -1,3 +1,5 @@
 import { ENDPOINTS } from './Requests';
+import { mainTheme } from './ColorPallete'
+import appFonts from './Fonts';
 
-export { ENDPOINTS };
+export { ENDPOINTS, mainTheme, appFonts };
