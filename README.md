@@ -28,44 +28,6 @@ These same forms appears when a marker or a draw is selected. Notice that **a ma
 When navigating through the horizontal list of the markers, whenever the user touchs a marker, the screen will try to center the point. When navigating the horizontal list of draws, whenever the user touchs a draw, the respective draw will be selected and the draw form will show with the draw's info and the screen will try to center in one of the points that is part of the draw.
 To remove either the marker or the draw, when one of these elements is selected, a remove button will be presented.
 
-### 🔭 Overview of the application
-
-Fig 1 - Splash screen
-
-![Splash screen](./images/01-splash-screen.gif)
-
-Fig 2 - Changing the display's controls
-
-![Display's control](./images/02-display-control.gif)
-
-Fig 3 - Adding a new marker
-
-![Add marker](./images/03-add-marker.gif)
-
-Fig 4 - Editing an existing marker
-
-![Edit marker](./images/04-edit-marker.gif)
-
-Fig 5 - Listing existing markers
-
-![Markers list](./images/05-marker-list.gif)
-
-Fig 6 - Deleting a marker
-
-![Delete marker](./images/06-delete-marker.gif)   
-
-Fig 7 - Selecting and editing a draw
-
-![Select and edit draw](./images/07-select-edit-draw.gif)
-
-Fig 8 - Adding a new draw
-
-![Add draw](./images/08-add-draw.gif)
-
-Fig 9 - Deleting an existing draw
-
-![Delete draw](./images/09-delete-draw.gif)
-
 ### 🚜 What is under the hood?
 
 Is just a React Native App build with Expo framework that uses React Navigation, React Native Maps, JSON Server and React Native Elements
@@ -114,5 +76,42 @@ $ expo start        # This will start the application
 ```
 
 After that the application will be available through the Metro Bundler and the user can run it in the Android or iOS emulator or on physical devices.
+### 🔭 Overview of the application
+
+Fig 1 - Splash screen
+
+![Splash screen](./images/01-splash-screen.gif)
+
+Fig 2 - Changing the display's controls
+
+![Display's control](./images/02-display-control.gif)
+
+Fig 3 - Adding a new marker
+
+![Add marker](./images/03-add-marker.gif)
+
+Fig 4 - Editing an existing marker
+
+![Edit marker](./images/04-edit-marker.gif)
+
+Fig 5 - Listing existing markers
+
+![Markers list](./images/05-marker-list.gif)
+
+Fig 6 - Deleting a marker
+
+![Delete marker](./images/06-delete-marker.gif)   
+
+Fig 7 - Selecting and editing a draw
+
+![Select and edit draw](./images/07-select-edit-draw.gif)
+
+Fig 8 - Adding a new draw
+
+![Add draw](./images/08-add-draw.gif)
+
+Fig 9 - Deleting an existing draw
+
+![Delete draw](./images/09-delete-draw.gif)
 
 </div>
