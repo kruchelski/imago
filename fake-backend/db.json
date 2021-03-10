@@ -1,32 +1,60 @@
 {
   "marker": [
     {
-      "id": 0,
-      "title": "Test Marker",
-      "desc": "This is a test marker",
-      "type": "yay",
+      "title": "SEPT!",
+      "desc": "It’s the glorious SEPT",
       "coordinate": {
-        "latitude": -25.456380280855427,
-        "longitude": -49.23582969008207
-      }
+        "latitude": -25.456431069679553,
+        "longitude": -49.2358437525821
+      },
+      "color": "#e78181",
+      "type": "yay",
+      "id": 1
     }
   ],
   "draw": [
     {
       "id": 0,
-      "title": "Example Draw",
-      "desc": "This is an example draw",
+      "title": "Draw SEPT",
+      "desc": "SEPTzin draw :)",
       "color": "#FF4040",
-      "coordinates":[
-        { "latitude": -25.456380280855427, "longitude": -49.23582969008207 },
-        { "latitude": -25.453380280855427, "longitude": -49.23782969008207 },
-        { "latitude": -25.452380280855427, "longitude": -49.23682969008207 },
-        { "latitude": -25.452380280855427, "longitude": -49.23602969008207 },
-        { "latitude": -25.453380280855427, "longitude": -49.23582969008207 },
-        { "latitude": -25.452380280855427, "longitude": -49.23562969008207 },
-        { "latitude": -25.452380280855427, "longitude": -49.23492969008207 },
-        { "latitude": -25.453380280855427, "longitude": -49.23382969008207 },
-        { "latitude": -25.456380280855427, "longitude": -49.23582969008207 }
+      "coordinates": [
+        {
+          "latitude": -25.456380280855427,
+          "longitude": -49.23582969008207
+        },
+        {
+          "latitude": -25.453380280855427,
+          "longitude": -49.23782969008207
+        },
+        {
+          "latitude": -25.452380280855426,
+          "longitude": -49.23682969008207
+        },
+        {
+          "latitude": -25.452380280855426,
+          "longitude": -49.23602969008207
+        },
+        {
+          "latitude": -25.453380280855427,
+          "longitude": -49.23582969008207
+        },
+        {
+          "latitude": -25.452380280855426,
+          "longitude": -49.23562969008207
+        },
+        {
+          "latitude": -25.452380280855426,
+          "longitude": -49.23492969008207
+        },
+        {
+          "latitude": -25.453380280855427,
+          "longitude": -49.23382969008207
+        },
+        {
+          "latitude": -25.456380280855427,
+          "longitude": -49.23582969008207
+        }
       ]
     }
   ]

@@ -8,7 +8,7 @@ const ViewPopUp = ({ style, children }) => {
     Animated.timing(
       fadeAnim,
       {
-        toValue: 200,
+        toValue: 500,
         duration: 100,
         useNativeDriver: false
       }

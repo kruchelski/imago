@@ -35,6 +35,12 @@ const CustomButton = (props) => {
         color: mainTheme.light,
         fontFamily: appFonts.regular,
         fontSize: sizeEnum.text[size]
+      },
+      danger: {
+        backgroundColor: mainTheme.danger,
+        color: mainTheme.light,
+        fontFamily: appFonts.regular,
+        fontSize: sizeEnum.text[size]
       }
     },
     outline: {
@@ -49,16 +55,24 @@ const CustomButton = (props) => {
         color: mainTheme.secondary,
         fontFamily: appFonts.regular,
         fontSize: sizeEnum.text[size]
+      },
+      danger: {
+        borderColor: mainTheme.danger,
+        color: mainTheme.danger,
+        fontFamily: appFonts.regular,
+        fontSize: sizeEnum.text[size]
       }
     },
     icon: {
       solid: {
         primary: mainTheme.light,
-        secondary: mainTheme.light
+        secondary: mainTheme.light,
+        danger: mainTheme.light
       },
       outline: {
         primary: mainTheme.primary,
-        secondary: mainTheme.secondary
+        secondary: mainTheme.secondary,
+        danger: mainTheme.danger
       }
     }
   }

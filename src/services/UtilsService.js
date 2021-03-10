@@ -1,3 +1,5 @@
+import { markerIcons } from '../assets';
+
 const hexStringGenerator = (length) => {
   let result = '';
   for (let i = 0; i < length; i++) {
@@ -6,6 +8,14 @@ const hexStringGenerator = (length) => {
   return result;
 }
 
+const randomMarkerIcon = () => {
+  const options = ['yay', 'cool', 'regular', 'ok', 'meh', 'terrible'];
+  const length = options.length;
+  const i = Math.floor(Math.random() * length - 0.1);
+  return options[i];
+}
+
 export {
-  hexStringGenerator
+  hexStringGenerator,
+  randomMarkerIcon
 }

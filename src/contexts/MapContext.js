@@ -48,12 +48,14 @@ const mapContextApi = (
     }
   }
 
-  const addMarker = async (coordinate, title, desc) => {
+  const addMarker = async (coordinate, title, desc, color, type) => {
     try {
       const requestBody = {
         title,
         desc,
-        coordinate
+        coordinate,
+        color,
+        type
       }
 
       Object.keys(requestBody).forEach(key => {
@@ -84,12 +86,14 @@ const mapContextApi = (
     }
   }
 
-  const editMarker = async (coordinate, title, desc, id) => {
+  const editMarker = async (coordinate, title, desc, color, type, id) => {
     try {
       const requestBody = {
         title,
         desc,
         coordinate,
+        color,
+        type
       }
 
       Object.keys(requestBody).forEach(key => {
@@ -101,7 +105,7 @@ const mapContextApi = (
       const markerResponse = await HttpService.makeRequest(
         'editMarker',
         requestBody,
-        id
+        {id}
       );
 
       if (!markerResponse || !markerResponse.data) {
@@ -131,7 +135,7 @@ const mapContextApi = (
       await HttpService.makeRequest(
         'deleteMarker',
         null,
-        id
+        {id}
       )
 
       const newMarkers = mapState.markers.filter(mark => mark.id !== id);
@@ -146,11 +150,12 @@ const mapContextApi = (
     }
   }
 
-  const addDraw = async (coordinates, title, desc) => {
+  const addDraw = async (title, desc, color, coordinates) => {
     try {
       const requestBody = {
         title,
         desc,
+        color,
         coordinates
       }
 
@@ -182,11 +187,12 @@ const mapContextApi = (
     }
   }
 
-  const editDraw = async (coordinates, title, desc, id) => {
+  const editDraw = async (title, desc, color, coordinates, id) => {
     try {
       const requestBody = {
         title,
         desc,
+        color,
         coordinates,
       }
 
@@ -199,7 +205,7 @@ const mapContextApi = (
       const markerResponse = await HttpService.makeRequest(
         'editDraw',
         requestBody,
-        id
+        {id}
       );
 
       if (!markerResponse || !markerResponse.data) {
@@ -226,13 +232,20 @@ const mapContextApi = (
       if (id === null || id === undefined) {
         throw new Error('Missing ID in the request');
       }
+      console.log('Fazendo request para apagar o draw')
       await HttpService.makeRequest(
         'deleteDraw',
         null,
-        id
+        {id}
       )
+      console.log('Request feita');
+      console.log('Draws atuais')
+      console.log(mapState.draws);
 
-      const newDraws = mapState.draw.filter(mark => mark.id !== id);
+      const newDraws = mapState.draws.filter(draw => draw.id !== id);
+
+      console.log('New Draws');
+      console.log(newDraws);
       setMapState((prevState) => {
         return {
           ...prevState,
@@ -255,10 +268,8 @@ const mapContextApi = (
         accuracy: Location.Accuracy.High
       });
 
-      console.log('Location');
+      console.log(actualLocation)
 
-      console.log(actualLocation);
-      
       setMapState(prevState => {
         return {
           ...prevState,

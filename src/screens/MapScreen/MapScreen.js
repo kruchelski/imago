@@ -1,7 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text } from 'react-native';
-import { CustomButton, CustomInput } from '../../components';
-import { ViewPopUp } from '../../components';
+import { View, Text, Keyboard } from 'react-native';
+import {
+  CustomButton,
+  ViewPopUp,
+  MarkerForm,
+  MarkerList,
+  DrawForm,
+  DrawList
+} from '../../components';
 import { useMap } from '../../hooks';
 import { UtilsService } from '../../services';
 import MapView, { Marker, Polyline } from 'react-native-maps';
@@ -10,14 +16,24 @@ import { markerIcons } from '../../assets';
 
 const MapScreen = () => {
   const _map = useRef(null);
+  const {
+    mapState,
+    addMarker,
+    editMarker,
+    removeMarker,
+    addDraw,
+    editDraw,
+    removeDraw,
+    mapErrorHandler
+  } = useMap();
+  
   const initialPosition = {
-    latitude: -25.456380280855427,
-    longitude: -49.23582969008207,
+    latitude: mapState?.location?.coords?.latitude || -25.456380280855427,
+    longitude: mapState?.location?.coords?.longitude || -49.23582969008207,
     latitudeDelta: 0.009,
     longitudeDelta: 0.009
   }
 
-  const { mapState } = useMap();
   const [currentRegion, setCurrentRegion] = useState(initialPosition);
   const [tempMarkers, setTempMarkers] = useState([]);
   const [tempDraw, setTempDraw] = useState(null);
@@ -27,32 +43,35 @@ const MapScreen = () => {
   const [showDraws, setShowDraws] = useState(true);
   const [showMarkersList, setShowMarkersList] = useState(false);
   const [showDrawsList, setShowDrawsList] = useState(false);
+  const [showMarkerForm, setShowMarkerForm] = useState(false);
+  const [showDrawForm, setShowDrawForm] = useState(false);
+  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setIsKeyboardOpen(true)
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setIsKeyboardOpen(false)
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, [])
 
   const handleRegionChange = (region) => {
     setCurrentRegion(region);
   }
 
-  const handleMapTouch = (coordinate) => {
-    console.log('XABLAU')
-    if (!drawState) {
-      handleSingleTouch(coordinate);
-    } else {
-      handleDrawTouch(coordinate);
-    }
-  }
-
-  const handleSingleTouch = (coordinate) => {
-    if (tempMarkers && tempMarkers.length) {
-      setShowViewPopUp(false);
-      setTempMarkers([]);
-      return;
-    }
-    let newTempMarker = {
-      color: `#${UtilsService.hexStringGenerator(6)}`,
-      coordinate
-    }
-    setTempMarkers([newTempMarker])
-    setShowViewPopUp(true);
+  const handleCameraChange = (coordinate) => {
     _map.current.animateToRegion({
       latitude: coordinate.latitude,
       longitude: coordinate.longitude,
@@ -61,23 +80,153 @@ const MapScreen = () => {
     }, 200)
   }
 
+  const handleMapTouch = (coordinate) => {
+    if (!drawState) {
+      handleSingleTouch();
+    } else {
+      handleDrawTouch(coordinate, null);
+    }
+  }
+
+  const handleSingleTouch = () => {
+    clearScreen();
+  }
+
+  const handleLongPress = (coordinate) => {
+    if (drawState) {
+      return;
+    }
+    clearScreen();
+    let newTempMarker = {
+      id: null,
+      title: '',
+      desc: '',
+      type: null,
+      color: `#${UtilsService.hexStringGenerator(6)}`,
+      coordinate
+    }
+    const newTempMarkers = [newTempMarker]
+    setTempMarkers(newTempMarkers);
+    setShowViewPopUp(true);
+    setShowMarkerForm(true);
+    handleCameraChange(coordinate);
+
+  }
+
   const handleDrawTouch = (coordinate) => {
     console.log('Draw Touch');
-    console.log(coordinate)
+    console.log(coordinate);
+  }
+
+  const handleMarkerPress = (id) => {
+    if (drawState) {
+      return;
+    }
+    clearScreen();
+    const selectedMarker = mapState.markers.find(marker => marker.id === id);
+    setShowViewPopUp(false);
+    setTempMarkers([]);
+    setTempMarkers([selectedMarker]);
+    setShowViewPopUp(true);
+    setShowMarkerForm(true);
+  }
+
+  const handleListShowPress = (type) => {
+    switch (type) {
+      case 'markers':
+        setShowDrawsList(false);
+        setShowMarkerForm(false);
+        setShowDrawForm(false);
+        setShowMarkersList(true);
+        break;
+      case 'draws':
+        setShowMarkersList(false);
+        setShowMarkerForm(false);
+        setShowDrawForm(false);
+        setShowDrawsList(true);
+        break;
+    }
+    setShowViewPopUp(true);
+  }
+
+  const handleOnSubmitMarker = async (action, marker) => {
+    try {
+      const { coordinate, title, desc, color, type, id } = marker;
+      switch (action) {
+        case 'create':
+          await addMarker(coordinate, title, desc, color, type);
+          break;
+        case 'edit':
+          await editMarker(coordinate, title, desc, color, type, id);
+          break;
+        case 'delete':
+          await removeMarker(id);
+          break;
+      }
+      clearScreen();
+    } catch (err) {
+      mapErrorHandler(err, `Error with marker action ${action}`);
+      clearScreen();
+    }
+  }
+
+  const handleOnSubmitDraw = async (action, draw) => {
+    try {
+      const { title, desc, color, coordinates, id } = draw;
+      switch (action) {
+        case 'create':
+          await addDraw(title, desc, color, coordinates);
+          break;
+        case 'edit':
+          await editDraw(title, desc, color, coordinates, id);
+          break;
+        case 'delete':
+          await removeDraw(id);
+          break;
+      }
+      clearScreen();
+    } catch (err) {
+      mapErrorHandler(err, `Error with draw action ${action}`);
+      clearScreen();
+    }
+  }
+
+  const handleDrawSelect = (coordinate, draw) => {
+    console.log('uwuwuwu');
+    console.log(coordinate);
+    console.log(draw);
+    clearScreen();
+    handleCameraChange(coordinate);
+    setTempDraw(draw);
+    setShowViewPopUp(true);
+    setShowDrawForm(true);
+  }
+
+  const clearScreen = () => {
+    setShowViewPopUp(false);
+    setTempMarkers([]);
+    setShowDrawsList(false);
+    setShowMarkersList(false);
+    setShowDrawForm(false);
+    setShowMarkerForm(false);
   }
 
   return (
     <>
-      <View style={styles.container}>
+      <View
+        style={styles.container}
+      >
         {mapState.location &&
           <MapView style={styles.map}
             ref={_map}
             region={currentRegion}
             onPress={(event) => handleMapTouch(event.nativeEvent.coordinate)}
+            onLongPress={(event) => handleLongPress(event.nativeEvent.coordinate)}
             onRegionChangeComplete={(region) => handleRegionChange(region)}
+
           >
             {
-              mapState.draws.map((draw) => {
+              showDraws && mapState.draws.map((draw) => {
                 return <Polyline
                   key={draw.id}
                   coordinates={draw.coordinates}
@@ -87,13 +236,18 @@ const MapScreen = () => {
               })
             }
             {
-              mapState.markers.map((mark) => {
+              showMarkers && mapState.markers.map((mark) => {
                 return <Marker
                   key={mark.id}
                   coordinate={mark.coordinate}
                   title={mark.title}
                   description={mark.desc}
-                  image={markerIcons[mark.type]}
+                  image={mark.type !== 'regular' ? markerIcons[mark.type] : null}
+                  pinColor={mark.color}
+                  onPress={event => {
+                    event.stopPropagation();
+                    handleMarkerPress(mark.id)
+                  }}
                 />
               })
             }
@@ -102,8 +256,6 @@ const MapScreen = () => {
                 return <Marker
                   key={index}
                   coordinate={mark.coordinate}
-                  title='Add this mark?'
-                  description=''
                   pinColor={mark.color}
                 />
               })
@@ -119,7 +271,7 @@ const MapScreen = () => {
             level={showMarkers ? 'primary' : 'secondary'}
             icon='map-marker'
             size='small'
-            onPress={() => { }}
+            onPress={() => { setShowMarkers(!showMarkers) }}
           />
 
           <CustomButton
@@ -128,7 +280,7 @@ const MapScreen = () => {
             level={showDraws ? 'primary' : 'secondary'}
             icon='drawing'
             size='small'
-            onPress={() => { }}
+            onPress={() => { setShowDraws(!showDraws) }}
           />
 
         </View>
@@ -141,7 +293,8 @@ const MapScreen = () => {
             level={showMarkersList ? 'primary' : 'secondary'}
             icon='map-marker-multiple'
             size='small'
-            onPress={() => { }}
+            disabled={drawState}
+            onPress={() => { handleListShowPress('markers') }}
           />
 
           <CustomButton
@@ -150,34 +303,68 @@ const MapScreen = () => {
             level={showDrawsList ? 'primary' : 'secondary'}
             icon='map-marker-path'
             size='small'
-            onPress={() => { }}
+            disabled={drawState}
+            onPress={() => { handleListShowPress('draws') }}
           />
-
-          <CustomButton
-            type='outline'
-            title='New Draw'
-            level='primary'
-            icon='draw'
-            size='small'
-            onPress={() => { }}
-          />
+          {
+            !drawState &&
+            <CustomButton
+              type='outline'
+              title='New Draw'
+              level='primary'
+              icon='draw'
+              size='small'
+              onPress={() => {setDrawState(true)}}
+            />
+          }
+          {
+            drawState &&
+            <CustomButton
+              type='solid'
+              title='Cancel Draw'
+              level='danger'
+              icon='cancel'
+              size='small'
+              onPress={() => {setDrawState(false)}}
+            />
+          }
         </View>
         {showViewPopUp &&
           <View
-            style={styles.overlay}
+            style={isKeyboardOpen ? styles.overlayInv : styles.overlay}
           >
             <ViewPopUp>
-              <Text>
-                Teste Teste
-            </Text>
-              <Text>
-                Teste Teste
-            </Text>
-              <Text>
-                Teste Teste
-            </Text>
+              {
+                showMarkersList && !showDrawsList && !showMarkerForm && !showDrawForm &&
+                <MarkerList 
+                  markers={mapState.markers} 
+                  handleOnItemSelect={handleCameraChange} 
+                />
+              }
+              {
+                showDrawsList && !showMarkersList && !showMarkerForm && !showDrawForm &&
+                <DrawList
+                  draws={mapState.draws}
+                  handleOnItemSelect={handleDrawSelect}
+                />
+              }
+              {
+                showMarkerForm && !showDrawForm && !showDrawsList && !showMarkersList && tempMarkers.length &&
+                <MarkerForm
+                  marker={tempMarkers[0]}
+                  onSubmit={handleOnSubmitMarker}
+                />
+              }
+              {
+                showDrawForm && !showMarkerForm && !showDrawsList && !showMarkersList &&
+                <DrawForm
+                  draw={tempDraw}
+                  onSubmit={handleOnSubmitDraw}
+                />
+              }
             </ViewPopUp>
-          </View>}
+          </View>
+        }
       </View>
     </>
   );

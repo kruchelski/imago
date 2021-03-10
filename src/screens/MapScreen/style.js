@@ -1,7 +1,7 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import { mainTheme } from '../../constants';
 
 const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   container: {
@@ -27,10 +27,20 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     bottom: 0,
-    opacity: 0.8,
+    opacity: 0.95,
+    backgroundColor: mainTheme.bg0,
+    width: windowWidth,
+    height: 250
+  },
+  overlayInv: {
+    flex: 1,
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    opacity: 0.95,
     backgroundColor: '#333333',
     width: windowWidth,
-    height: windowHeight / 3
+    height: 250
   },
   topButtonsContainer: {
     position: 'absolute',

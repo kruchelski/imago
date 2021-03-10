@@ -75,7 +75,7 @@ export const ENDPOINTS = {
   },
 
   editDraw: {
-    url: `${draw}@id`,
+    url: `${draw}/@id`,
     method: 'put',
     body: true,
     params: ['id'],

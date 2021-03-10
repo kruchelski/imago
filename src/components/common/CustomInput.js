@@ -13,7 +13,7 @@ const CustomInput = (props) => {
       icon ?
         <Icon
           name={icon}
-          size={18}
+          size={14}
           color={customStyle.icon[level]}
         /> :
         null
@@ -21,7 +21,7 @@ const CustomInput = (props) => {
     inputStyle={customStyle.input}
     labelStyle={customStyle.label[level]}
     inputContainerStyle={customStyle.container[level]}
-    placeholderTextColor={`${mainTheme.fg2}5e`}
+    placeholderTextColor={`${mainTheme.fg1}ae`}
     
 
   />
@@ -35,10 +35,12 @@ const customStyle = {
   },
   label: {
     primary: {
-      color: mainTheme.primary
+      color: mainTheme.primary,
+      fontSize: 14,
     },
     secondary: {
-      color: mainTheme.secondary
+      color: mainTheme.secondary,
+      fontSize: 14,
     }
   },
   container: {

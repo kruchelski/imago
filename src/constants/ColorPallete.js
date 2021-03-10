@@ -12,7 +12,8 @@ const mainTheme = {
   fg1: '#666666',
   fg2: '#888888',
   light: '#fafafa',
-  dark: '#282828'
+  dark: '#282828',
+  danger: '#b54b43'
 }
 
 export { mainTheme };
