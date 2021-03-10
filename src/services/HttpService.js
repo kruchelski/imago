@@ -43,10 +43,6 @@ export const makeRequest = async (
 
   } catch (err) {
 
-    console.log('Error HTTP SERVICE');
-    console.log(err);
-    console.log('--------------------');
-    console.log(JSON.stringify(err))
     const status = err?.response?.status || 'Outro Status';
     const msg = err?.response?.data?.error_description ||
       err?.error ||

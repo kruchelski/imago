@@ -45,6 +45,7 @@ const MapScreen = () => {
   const [showDrawsList, setShowDrawsList] = useState(false);
   const [showMarkerForm, setShowMarkerForm] = useState(false);
   const [showDrawForm, setShowDrawForm] = useState(false);
+  const [showUserLocation, setShowUserLocation] = useState(true);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
   useEffect(() => {
@@ -147,9 +148,6 @@ const MapScreen = () => {
   }
 
   const handleDrawSelect = (coordinate, draw) => {
-    console.log('uwuwuwu');
-    console.log(coordinate);
-    console.log(draw);
     clearScreen();
     handleCameraChange(coordinate);
     setTempDraw(draw);
@@ -277,7 +275,7 @@ const MapScreen = () => {
             onPress={(event) => handleMapTouch(event.nativeEvent.coordinate)}
             onLongPress={(event) => handleLongPress(event.nativeEvent.coordinate)}
             onRegionChangeComplete={(region) => handleRegionChange(region)}
-            showsUserLocation={true}
+            showsUserLocation={showUserLocation}
             followsUserLocation={true}
           >
             {
@@ -340,6 +338,15 @@ const MapScreen = () => {
           <View
             style={styles.topButtonsContainer}
           >
+            <CustomButton
+              type={showUserLocation ? 'solid' : 'outline'}
+              title={showUserLocation ? 'USER ON' : 'USER OFF'}
+              level={showUserLocation ? 'primary' : 'secondary'}
+              icon='crosshair-gps'
+              size='small'
+              onPress={() => { setShowUserLocation(!showUserLocation) }}
+            />
+
             <CustomButton
               type={showMarkers ? 'solid' : 'outline'}
               title={showMarkers ? 'MARKERS ON' : 'MARKERS OFF'}

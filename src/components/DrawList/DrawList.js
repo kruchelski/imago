@@ -17,7 +17,7 @@ const DrawList = ({ draws, handleOnItemSelect }) => {
         <Text
           style={styles.title}
         >
-          Draws's list
+          Draws list
         </Text>
       </View>
       <FlatList

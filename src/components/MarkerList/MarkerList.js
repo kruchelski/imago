@@ -11,7 +11,7 @@ const MarkerList = ({ markers, handleOnItemSelect }) => {
         <Text
           style={styles.title}
         >
-          Markers's list
+          Markers list
         </Text>
       </View>
       <FlatList

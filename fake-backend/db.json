@@ -21,13 +21,34 @@
       "color": "#cea17d",
       "type": "ok",
       "id": 2
+    },
+    {
+      "title": "New test maker (edited)",
+      "desc": "This is a new marker (edited)",
+      "coordinate": {
+        "latitude": -25.462164218243345,
+        "longitude": -49.238265512309425
+      },
+      "color": "#0b7949",
+      "type": "terrible",
+      "id": 3
+    },
+    {
+      "title": "Aaaaaaa",
+      "desc": "What’s going on here?",
+      "coordinate": {
+        "latitude": -25.4690768255076,
+        "longitude": -49.23246875009758
+      },
+      "color": "#3d719c",
+      "type": "cool",
+      "id": 5
     }
   ],
   "draw": [
     {
-      "id": 0,
-      "title": "Draw SEPT",
-      "desc": "SEPTzin draw :)",
+      "title": "Draw SEPT initial",
+      "desc": "SEPTzin draw :) :)",
       "color": "#FF4040",
       "coordinates": [
         {
@@ -66,7 +87,8 @@
           "latitude": -25.456380280855427,
           "longitude": -49.23582969008207
         }
-      ]
+      ],
+      "id": 0
     },
     {
       "title": "A square?",

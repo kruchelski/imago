@@ -1,23 +1,20 @@
 import { StyleSheet } from 'react-native';
+import { mainTheme } from '../../constants';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'stretch',
-    justifyContent: 'center',
-  },
-  map: {
-    flex: 1
-  },
-  button: {
-    borderRadius: 6,
-    padding: 5,
-    borderWidth: 1,
-    borderColor: '#333333',
-    margin: 10
-
-  }
+	container: {
+		flex: 1,
+		backgroundColor: mainTheme.bg0,
+		alignItems: 'center',
+		justifyContent: 'space-between',
+		padding: 10,
+		paddingVertical: 50
+	},
+	logoImage: {
+		width: 300,
+		height: 150,
+		resizeMode: 'contain',
+	},
 });
 
 export default styles;

@@ -232,20 +232,14 @@ const mapContextApi = (
       if (id === null || id === undefined) {
         throw new Error('Missing ID in the request');
       }
-      console.log('Fazendo request para apagar o draw')
       await HttpService.makeRequest(
         'deleteDraw',
         null,
         {id}
       )
-      console.log('Request feita');
-      console.log('Draws atuais')
-      console.log(mapState.draws);
 
       const newDraws = mapState.draws.filter(draw => draw.id !== id);
 
-      console.log('New Draws');
-      console.log(newDraws);
       setMapState((prevState) => {
         return {
           ...prevState,
@@ -267,8 +261,6 @@ const mapContextApi = (
       let actualLocation = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.High
       });
-
-      console.log(actualLocation)
 
       setMapState(prevState => {
         return {

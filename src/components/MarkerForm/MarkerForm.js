@@ -20,8 +20,6 @@ const MarkerForm = ({ marker, onSubmit }) => {
       desc,
       type: marker.type ? marker.type : UtilsService.randomMarkerIcon()
     }
-    console.log('NOVO MARKER');
-    console.log(newMarker)
 
     onSubmit(action, newMarker);
   }

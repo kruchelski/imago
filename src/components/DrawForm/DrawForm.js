@@ -18,8 +18,6 @@ const DrawForm = ({ draw, onSubmit }) => {
       title,
       desc,
     }
-    console.log('NOVO DRAW');
-    console.log(newDraw)
 
     onSubmit(action, newDraw);
   }
