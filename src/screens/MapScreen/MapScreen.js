@@ -26,7 +26,7 @@ const MapScreen = () => {
     removeDraw,
     mapErrorHandler
   } = useMap();
-  
+
   const initialPosition = {
     latitude: mapState?.location?.coords?.latitude || -25.456380280855427,
     longitude: mapState?.location?.coords?.longitude || -49.23582969008207,
@@ -84,7 +84,7 @@ const MapScreen = () => {
     if (!drawState) {
       handleSingleTouch();
     } else {
-      handleDrawTouch(coordinate, null);
+      handleDrawTouch(coordinate);
     }
   }
 
@@ -114,8 +114,23 @@ const MapScreen = () => {
   }
 
   const handleDrawTouch = (coordinate) => {
-    console.log('Draw Touch');
-    console.log(coordinate);
+    if (!tempDraw.coordinates.length) {
+      const startMarker = {
+        id: null,
+        title: 'Drawing start',
+        desc: 'Initial point of the draw',
+        type: null,
+        color: tempDraw.color,
+        coordinate
+      }
+      setTempMarkers([startMarker]);
+    }
+    setTempDraw(prevState => {
+      return {
+        ...prevState,
+        coordinates: [...prevState.coordinates, coordinate]
+      }
+    })
   }
 
   const handleMarkerPress = (id) => {
@@ -129,6 +144,54 @@ const MapScreen = () => {
     setTempMarkers([selectedMarker]);
     setShowViewPopUp(true);
     setShowMarkerForm(true);
+  }
+
+  const handleDrawSelect = (coordinate, draw) => {
+    console.log('uwuwuwu');
+    console.log(coordinate);
+    console.log(draw);
+    clearScreen();
+    handleCameraChange(coordinate);
+    setTempDraw(draw);
+    setShowViewPopUp(true);
+    setShowDrawForm(true);
+  }
+
+  const handleDraw = (action) => {
+    switch (action) {
+      case 'start':
+        clearScreen();
+        let newDraw = {
+          id: null,
+          title: '',
+          desc: '',
+          color: `#${UtilsService.hexStringGenerator(6)}`,
+          coordinates: []
+        }
+        setTempDraw(newDraw);
+        setDrawState(true);
+        break;
+      case 'finish':
+        const endMarker = {
+          id: null,
+          title: 'Drawing finish',
+          desc: 'Last point of the draw',
+          type: null,
+          color: tempDraw.color,
+          coordinate: tempDraw.coordinates[tempDraw.coordinates.length - 1],
+        }
+        let newTempMarkersArray = Array.from(tempMarkers);
+        newTempMarkersArray.push(endMarker);
+        setTempMarkers(newTempMarkersArray);
+        setShowDrawForm(true);
+        setShowViewPopUp(true);
+        setDrawState(false);
+        break;
+      case 'cancel': {
+        clearScreen();
+        break;
+      }
+    }
   }
 
   const handleListShowPress = (type) => {
@@ -191,20 +254,10 @@ const MapScreen = () => {
     }
   }
 
-  const handleDrawSelect = (coordinate, draw) => {
-    console.log('uwuwuwu');
-    console.log(coordinate);
-    console.log(draw);
-    clearScreen();
-    handleCameraChange(coordinate);
-    setTempDraw(draw);
-    setShowViewPopUp(true);
-    setShowDrawForm(true);
-  }
-
   const clearScreen = () => {
     setShowViewPopUp(false);
     setTempMarkers([]);
+    setTempDraw(null);
     setShowDrawsList(false);
     setShowMarkersList(false);
     setShowDrawForm(false);
@@ -217,13 +270,15 @@ const MapScreen = () => {
         style={styles.container}
       >
         {mapState.location &&
-          <MapView style={styles.map}
+          <MapView 
+            style={styles.map}
             ref={_map}
             region={currentRegion}
             onPress={(event) => handleMapTouch(event.nativeEvent.coordinate)}
             onLongPress={(event) => handleLongPress(event.nativeEvent.coordinate)}
             onRegionChangeComplete={(region) => handleRegionChange(region)}
-
+            showsUserLocation={true}
+            followsUserLocation={true}
           >
             {
               showDraws && mapState.draws.map((draw) => {
@@ -234,6 +289,14 @@ const MapScreen = () => {
                   strokeWidth={5}
                 />
               })
+            }
+            {
+              tempDraw && 
+              <Polyline
+                coordinates={tempDraw.coordinates}
+                strokeColor={tempDraw.color}
+                strokeWidth={5}
+              />
             }
             {
               showMarkers && mapState.markers.map((mark) => {
@@ -262,73 +325,112 @@ const MapScreen = () => {
             }
           </MapView>
         }
-        <View
-          style={styles.topButtonsContainer}
-        >
-          <CustomButton
-            type={showMarkers ? 'solid' : 'outline'}
-            title={showMarkers ? 'MARKERS ON' : 'MARKERS OFF'}
-            level={showMarkers ? 'primary' : 'secondary'}
-            icon='map-marker'
-            size='small'
-            onPress={() => { setShowMarkers(!showMarkers) }}
-          />
+        {
+          !!mapState.error &&
+          <View>
+            <Text
+              style={styles.error}
+            >
+              {mapState.error}
+            </Text>
+          </View>
+        }
+        {
+          !drawState &&
+          <View
+            style={styles.topButtonsContainer}
+          >
+            <CustomButton
+              type={showMarkers ? 'solid' : 'outline'}
+              title={showMarkers ? 'MARKERS ON' : 'MARKERS OFF'}
+              level={showMarkers ? 'primary' : 'secondary'}
+              icon='map-marker'
+              size='small'
+              onPress={() => { setShowMarkers(!showMarkers) }}
+            />
 
-          <CustomButton
-            type={showDraws ? 'solid' : 'outline'}
-            title={showDraws ? 'DRAWS ON' : 'DRAWS OFF'}
-            level={showDraws ? 'primary' : 'secondary'}
-            icon='drawing'
-            size='small'
-            onPress={() => { setShowDraws(!showDraws) }}
-          />
+            <CustomButton
+              type={showDraws ? 'solid' : 'outline'}
+              title={showDraws ? 'DRAWS ON' : 'DRAWS OFF'}
+              level={showDraws ? 'primary' : 'secondary'}
+              icon='drawing'
+              size='small'
+              onPress={() => { setShowDraws(!showDraws) }}
+            />
 
-        </View>
-        <View
-          style={styles.bottomButtonsContainer}
-        >
-          <CustomButton
-            type='outline'
-            title='Markers'
-            level={showMarkersList ? 'primary' : 'secondary'}
-            icon='map-marker-multiple'
-            size='small'
-            disabled={drawState}
-            onPress={() => { handleListShowPress('markers') }}
-          />
+          </View>
+        }
+        {
+          drawState &&
+          <View
+            style={styles.topButtonsContainer}
+          >
+            <Text
+              style={styles.info}
+            >
+              Drawing mode
+            </Text>
+          </View>
+        }
+        {
+          !drawState &&
+          <View
+            style={styles.bottomButtonsContainer}
+          >
+            <CustomButton
+              type='outline'
+              title='Markers'
+              level={showMarkersList ? 'primary' : 'secondary'}
+              icon='map-marker-multiple'
+              size='small'
+              disabled={drawState}
+              onPress={() => { handleListShowPress('markers') }}
+            />
 
-          <CustomButton
-            type='outline'
-            title='Draws'
-            level={showDrawsList ? 'primary' : 'secondary'}
-            icon='map-marker-path'
-            size='small'
-            disabled={drawState}
-            onPress={() => { handleListShowPress('draws') }}
-          />
-          {
-            !drawState &&
+            <CustomButton
+              type='outline'
+              title='Draws'
+              level={showDrawsList ? 'primary' : 'secondary'}
+              icon='map-marker-path'
+              size='small'
+              disabled={drawState}
+              onPress={() => { handleListShowPress('draws') }}
+            />
+
             <CustomButton
               type='outline'
               title='New Draw'
               level='primary'
               icon='draw'
               size='small'
-              onPress={() => {setDrawState(true)}}
+              onPress={() => { handleDraw('start') }}
             />
-          }
-          {
-            drawState &&
+          </View>
+        }
+        {
+          drawState &&
+          <View
+            style={styles.bottomButtonsContainer}
+          >
             <CustomButton
-              type='solid'
+              type='outline'
               title='Cancel Draw'
               level='danger'
               icon='cancel'
               size='small'
-              onPress={() => {setDrawState(false)}}
+              onPress={() => { handleDraw('cancel') }}
             />
-          }
-        </View>
+
+            <CustomButton
+              type='solid'
+              title='Finish draw'
+              level='primary'
+              icon='bookmark-check'
+              size='small'
+              onPress={() => { handleDraw('finish') }}
+            />
+          </View>
+        }
         {showViewPopUp &&
           <View
             style={isKeyboardOpen ? styles.overlayInv : styles.overlay}
@@ -336,9 +438,9 @@ const MapScreen = () => {
             <ViewPopUp>
               {
                 showMarkersList && !showDrawsList && !showMarkerForm && !showDrawForm &&
-                <MarkerList 
-                  markers={mapState.markers} 
-                  handleOnItemSelect={handleCameraChange} 
+                <MarkerList
+                  markers={mapState.markers}
+                  handleOnItemSelect={handleCameraChange}
                 />
               }
               {

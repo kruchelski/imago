@@ -10,6 +10,17 @@
       "color": "#e78181",
       "type": "yay",
       "id": 1
+    },
+    {
+      "title": "nhac",
+      "desc": "tralalala",
+      "coordinate": {
+        "latitude": -25.461981478190964,
+        "longitude": -49.230714514052806
+      },
+      "color": "#cea17d",
+      "type": "ok",
+      "id": 2
     }
   ],
   "draw": [
@@ -56,6 +67,98 @@
           "longitude": -49.23582969008207
         }
       ]
+    },
+    {
+      "title": "A square?",
+      "desc": "A simple square (or not?)",
+      "color": "#47c738",
+      "coordinates": [
+        {
+          "latitude": -25.456724774069542,
+          "longitude": -49.24512909386635
+        },
+        {
+          "latitude": -25.456242263153243,
+          "longitude": -49.24121957856087
+        },
+        {
+          "latitude": -25.459581706963988,
+          "longitude": -49.240839877433984
+        },
+        {
+          "latitude": -25.45991183706046,
+          "longitude": -49.24460876269262
+        },
+        {
+          "latitude": -25.456724774069542,
+          "longitude": -49.24512909386635
+        }
+      ],
+      "id": 1
+    },
+    {
+      "title": "Hmmm",
+      "desc": "What is this?",
+      "color": "#5a2e1e",
+      "coordinates": [
+        {
+          "latitude": -25.457512024569667,
+          "longitude": -49.24438375461753
+        },
+        {
+          "latitude": -25.457296166073974,
+          "longitude": -49.24330090325586
+        },
+        {
+          "latitude": -25.457512024569667,
+          "longitude": -49.24328684025116
+        }
+      ],
+      "id": 2
+    },
+    {
+      "title": "Heyy",
+      "desc": "?",
+      "color": "#6195ca",
+      "coordinates": [
+        {
+          "latitude": -25.457156492723385,
+          "longitude": -49.24251337499291
+        },
+        {
+          "latitude": -25.45708030719112,
+          "longitude": -49.241627405697045
+        },
+        {
+          "latitude": -25.457321561211202,
+          "longitude": -49.24159927968762
+        }
+      ],
+      "id": 3
+    },
+    {
+      "title": "Looks like a face?",
+      "desc": "A very badly draw face",
+      "color": "#ccfbda",
+      "coordinates": [
+        {
+          "latitude": -25.458400849590404,
+          "longitude": -49.244285313584584
+        },
+        {
+          "latitude": -25.458667495816613,
+          "longitude": -49.24365247837321
+        },
+        {
+          "latitude": -25.458578613806864,
+          "longitude": -49.24226024090842
+        },
+        {
+          "latitude": -25.458134202773422,
+          "longitude": -49.24183835076744
+        }
+      ],
+      "id": 4
     }
   ]
 }

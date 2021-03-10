@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import { mainTheme } from '../../constants';
+import { appFonts, mainTheme } from '../../constants';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 5,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     alignItems: 'center'
   },
   bottomButtonsContainer: {
@@ -63,8 +63,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 5,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     alignItems: 'center'
+  },
+  info: {
+    textAlign: 'center',
+    color: mainTheme.secondary,
+    fontSize: 14,
+    fontFamily: appFonts.bold
+  },
+  error: {
+    margin: 5,
+    padding: 5,
+    width: '100%',
+    borderColor: mainTheme.danger,
+    borderWidth: 1,
+    borderRadius: 6,
+    textAlign: 'center',
+    fontFamily: appFonts.regular,
+    fontSize: 12,
+    color: mainTheme.danger
   }
 });
 
